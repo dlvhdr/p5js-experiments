@@ -68,7 +68,7 @@ let s = (sk) => {
     sk.rotateY(a * 0.4);
     sk.rotateZ(a * 0.1);
     boxes.map(box => box.draw());
-    a += 0.01;
+    a += 0.2;
   };
 
   sk.mousePressed = () => {

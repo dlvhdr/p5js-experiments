@@ -31,6 +31,10 @@
   }
 }
 
+a {
+  color: #E7ECEF;
+}
+
 html, body {
   height: 100%;
 }

@@ -1,5 +1,7 @@
 import React from 'react';
-import p5 from 'p5';
+import p5 from '../p5.js';
+
+p5.disableFriendlyErrors = true;
 
 class P5Wrapper extends React.Component {
   componentDidMount() {

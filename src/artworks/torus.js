@@ -5,6 +5,7 @@ let yAngle = 0;
 let colorOffset = 0;
 const RADIUS = 160;
 const NUM_CIRCLES = 70;
+const NUM_TINY_SPHERES = 10;
 const INNER_RADIUS = 50;
 let circles = [];
 let canvas;
@@ -27,34 +28,41 @@ class DottedCircle {
     this.sk.rotateZ(angle);
 
     const COLORS = ['#ff00ce', '#fbf44f', '#6cd9f9'];
-    const NUM_CIRCLES = 10;
-    let currentOffset = 0;
+
     for (let j = 0; j < COLORS.length; j++) {
       this.sk.fill(COLORS[(j + this.colorOffset) % COLORS.length]);
       this.sk.rotateZ(this.sk.TWO_PI / COLORS.length);
-      for (let i = 0; i < NUM_CIRCLES; i++) {
-        this.sk.rotateZ(this.sk.TWO_PI / NUM_CIRCLES);
-
-        this.sk.push();
-        this.sk.translate(this.r, this.r, 0);
-        this.sk.sphere(1.7);
-        this.sk.pop();
+      for (let i = 0; i < NUM_TINY_SPHERES; i++) {
+        this.drawTinySphere();
       }
 
-      currentOffset++;
     }
 
     this.sk.pop();
+  }
+
+  drawTinySphere() {
+    this.sk.rotateZ(this.sk.TWO_PI / NUM_TINY_SPHERES);
+
+    // this.sk.push();
+    this.sk.translate(this.r, this.r, 0);
+    this.sk.sphere(1.7);
+    this.sk.translate(-this.r, -this.r, 0);
+    // this.sk.pop();
   }
 }
 
 let s = (sk) => {
   sk.setup = () => {
+    // console.log('setup');
+    canvas = sk.createCanvas(CANVAS_SIZE, CANVAS_SIZE, sk.WEBGL);
+
     circles = [];
     colorOffset = 0;
-    canvas = sk.createCanvas(CANVAS_SIZE, CANVAS_SIZE, sk.WEBGL);
-    sk.fill('white');
+    sk.normalMaterial();
+    // sk.fill('white');
     for (let i = 0; i < NUM_CIRCLES; i++) {
+      // console.log('pushing circle');
       circles.push(new DottedCircle(sk, RADIUS, RADIUS, INNER_RADIUS, colorOffset));
       colorOffset++;
     }
@@ -64,6 +72,7 @@ let s = (sk) => {
 
 
   sk.draw = () => {
+    // console.trace();
     sk.background('black');
     sk.translate(0, -40, 0);
     sk.noStroke();
